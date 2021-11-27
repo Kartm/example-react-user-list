@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Styled from "styled-components";
 import UserList from "../components/UserList";
-import { getUsers } from "../user.api";
-import { IUser } from "../user.model";
+import { getUsers } from "../shared/user.api";
+import { IUser } from "../shared/user.model";
 
 const Container = Styled.div`
   background: red;

@@ -1,5 +1,5 @@
 import Styled from "styled-components";
-import { IUser } from "../user.model";
+import { IUser } from "../shared/user.model";
 
 const Container = Styled.div`
   background: red;
