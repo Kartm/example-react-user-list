@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Styled from "styled-components";
 import debounce from "lodash/debounce";
-import { userInfo } from "os";
+import { IUser } from "./user.model";
+import { getUsers } from "./user.api";
 
 const Container = Styled.div`
   background: red;
@@ -15,44 +16,25 @@ const SearchField = Styled.input`
   padding: 20px;
 `;
 
-//jsonplaceholder.typicode.com/users
-
-interface IUser {
-  id: number;
-  name: string;
-  username: string;
-}
-
 const App = () => {
-  const [loading, setLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [users, setUsers] = useState<IUser[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    const url = "https://jsonplaceholder.typicode.com/users";
+    const test = async () => {
+      const usersResponse = await getUsers();
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          setLoading(false);
-          // const url = `https://jsonplaceholder.typicode.com/users/_search?username=${searchValue}`;
-          // todo handle error
-          console.error("something went wrong");
-          return;
-        }
-        const json = await response.json();
-        setUsers(json);
-        console.log(json);
-      } catch (error) {
-        console.log("error", error);
+      if (usersResponse.error) {
+        setErrorMessage(usersResponse.error);
+        return;
       }
+
+      setUsers(usersResponse.users);
     };
 
-    setLoading(true);
-    fetchData();
-    setLoading(false);
+    test();
   }, []);
 
   useEffect(() => {
@@ -75,8 +57,10 @@ const App = () => {
   return (
     <Container>
       <SearchField defaultValue={searchValue} onChange={handleInputChange} />
-      {loading ? (
-        <div>loading</div>
+      {errorMessage ? (
+        <div>{errorMessage}</div>
+      ) : filteredUsers.length === 0 ? (
+        <div>brak wyników</div>
       ) : (
         filteredUsers.map((user, i) => (
           <div key={user.id}>{`${i + 1}. ${user.name} @${user.username}`}</div>
