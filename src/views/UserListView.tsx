@@ -53,7 +53,11 @@ const UserListView = () => {
 
   return (
     <Container>
-      <SearchField defaultValue={searchValue} onChange={handleInputChange} />
+      <SearchField
+        defaultValue={searchValue}
+        onChange={handleInputChange}
+        aria-label="search-input"
+      />
       {errorMessage ? (
         <div>{errorMessage}</div>
       ) : filteredUsers.length === 0 ? (
