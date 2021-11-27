@@ -1,5 +1,6 @@
 import Styled from "styled-components";
 import { IUser } from "../shared/user.model";
+import UserRow from "./UserRow";
 
 const Container = Styled.div`
   background: red;
@@ -14,7 +15,7 @@ const UserList = ({ users }: Props) => {
   return (
     <Container>
       {users.map((user, i) => (
-        <div key={user.id}>{`${i + 1}. ${user.name} @${user.username}`}</div>
+        <UserRow user={user} key={i} />
       ))}
     </Container>
   );
