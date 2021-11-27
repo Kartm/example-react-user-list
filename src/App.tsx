@@ -3,6 +3,7 @@ import Styled from "styled-components";
 import debounce from "lodash/debounce";
 import { IUser } from "./user.model";
 import { getUsers } from "./user.api";
+import UserList from "./components/UserList";
 
 const Container = Styled.div`
   background: red;
@@ -23,7 +24,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    const test = async () => {
+    const fetchData = async () => {
       const usersResponse = await getUsers();
 
       if (usersResponse.error) {
@@ -34,7 +35,7 @@ const App = () => {
       setUsers(usersResponse.users);
     };
 
-    test();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -62,9 +63,7 @@ const App = () => {
       ) : filteredUsers.length === 0 ? (
         <div>brak wyników</div>
       ) : (
-        filteredUsers.map((user, i) => (
-          <div key={user.id}>{`${i + 1}. ${user.name} @${user.username}`}</div>
-        ))
+        <UserList users={filteredUsers} />
       )}
     </Container>
   );
