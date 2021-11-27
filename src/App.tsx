@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Styled from "styled-components";
 import debounce from "lodash/debounce";
+import { userInfo } from "os";
 
 const Container = Styled.div`
   background: red;
@@ -23,8 +24,10 @@ interface IUser {
 }
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [users, setUsers] = useState<IUser[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
 
   useEffect(() => {
     const url = "https://jsonplaceholder.typicode.com/users";
@@ -32,6 +35,13 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(url);
+        if (!response.ok) {
+          setLoading(false);
+          // const url = `https://jsonplaceholder.typicode.com/users/_search?username=${searchValue}`;
+          // todo handle error
+          console.error("something went wrong");
+          return;
+        }
         const json = await response.json();
         setUsers(json);
         console.log(json);
@@ -40,31 +50,38 @@ const App = () => {
       }
     };
 
+    setLoading(true);
     fetchData();
-  }, [searchValue]);
+    setLoading(false);
+  }, []);
 
-  const debounceHandler = useCallback(
-    debounce((value) => {
-      setSearchValue(value);
-    }, 500),
-    []
-  );
+  useEffect(() => {
+    setFilteredUsers(
+      users.filter((user) =>
+        user.name.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    );
+  }, [searchValue, users]);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
 
-      debounceHandler(value);
+      setSearchValue(value);
     },
-    [debounceHandler]
+    []
   );
 
   return (
     <Container>
       <SearchField defaultValue={searchValue} onChange={handleInputChange} />
-      {users.map((user, i) => (
-        <div key={user.id}>{`${i + 1}. ${user.name} @${user.username}`}</div>
-      ))}
+      {loading ? (
+        <div>loading</div>
+      ) : (
+        filteredUsers.map((user, i) => (
+          <div key={user.id}>{`${i + 1}. ${user.name} @${user.username}`}</div>
+        ))
+      )}
     </Container>
   );
 };
