@@ -2,7 +2,7 @@ import Styled from "styled-components";
 import { IUser } from "../shared/user.model";
 import UserRow from "./UserRow";
 
-const Container = Styled.div`
+const Container = Styled.ol`
   background: red;
   width: 100%;
 `;

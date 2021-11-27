@@ -1,7 +1,7 @@
 import Styled from "styled-components";
 import { IUser } from "../shared/user.model";
 
-const Container = Styled.div`
+const Container = Styled.li`
   background: red;
   width: 100%;
 `;
