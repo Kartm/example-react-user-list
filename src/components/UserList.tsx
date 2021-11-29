@@ -3,8 +3,6 @@ import { IUser } from "../shared/user.model";
 import UserRow from "./UserRow";
 
 const Container = Styled.ol`
-  background: red;
-  width: 100%;
 `;
 
 interface Props {

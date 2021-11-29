@@ -3,7 +3,6 @@ import { IUser } from "../shared/user.model";
 
 const Container = Styled.li`
   background: red;
-  width: 100%;
 `;
 
 interface Props {

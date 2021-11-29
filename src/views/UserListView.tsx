@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Styled from "styled-components";
+import CircularSpinner from "../components/CircularSpinner";
 import UserList from "../components/UserList";
 import { getUsers } from "../shared/user.api";
 import { IUser } from "../shared/user.model";
 
+const Header = Styled.h1`
+`;
+
 const Container = Styled.div`
-  background: red;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const SearchField = Styled.input`
@@ -18,6 +23,7 @@ const UserListView = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,15 +37,19 @@ const UserListView = () => {
       setUsers(usersResponse.users);
     };
 
+    setIsLoading(true);
     fetchData();
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     setFilteredUsers(
       users.filter((user) =>
         user.name.toLowerCase().includes(searchValue.toLowerCase())
       )
     );
+    setIsLoading(false);
   }, [searchValue, users]);
 
   const handleInputChange = useCallback(
@@ -53,12 +63,16 @@ const UserListView = () => {
 
   return (
     <Container>
+      <Header>{"Users list"}</Header>
       <SearchField
+        placeholder="Search by username..."
         defaultValue={searchValue}
         onChange={handleInputChange}
         aria-label="search-input"
       />
-      {errorMessage ? (
+      {isLoading ? (
+        <CircularSpinner />
+      ) : errorMessage ? (
         <div>{errorMessage}</div>
       ) : filteredUsers.length === 0 ? (
         <div>brak wyników</div>
