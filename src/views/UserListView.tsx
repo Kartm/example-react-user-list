@@ -93,7 +93,6 @@ const UserListView = () => {
       <Header>{"Users list"}</Header>
       <SearchField
         placeholder="Search by username..."
-        defaultValue={searchValue}
         onChange={handleInputChange}
         aria-label="search-input"
       />
