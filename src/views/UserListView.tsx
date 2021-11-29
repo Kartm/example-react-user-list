@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Styled from "styled-components";
 import CircularSpinner from "../components/CircularSpinner";
+import EmptyState from "../components/EmptyState";
 import UserList from "../components/UserList";
 import { getUsers } from "../shared/user.api";
 import { IUser } from "../shared/user.model";
@@ -41,9 +42,17 @@ const UserListView = () => {
       setUsers(usersResponse.users);
     };
 
-    setIsLoading(true);
-    fetchData();
-    setIsLoading(false);
+    let mounted = true;
+
+    if (mounted) {
+      setIsLoading(true);
+      fetchData();
+      setIsLoading(false);
+    }
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -79,7 +88,7 @@ const UserListView = () => {
       ) : errorMessage ? (
         <div>{errorMessage}</div>
       ) : filteredUsers.length === 0 ? (
-        <div>brak wyników</div>
+        <EmptyState />
       ) : (
         <UserList users={filteredUsers} />
       )}
