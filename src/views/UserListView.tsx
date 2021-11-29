@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Styled from "styled-components";
 import CircularSpinner from "../components/CircularSpinner";
 import EmptyState from "../components/EmptyState";
@@ -72,6 +72,22 @@ const UserListView = () => {
     []
   );
 
+  function Content() {
+    if (isLoading) {
+      return <CircularSpinner />;
+    }
+
+    if (errorMessage) {
+      return <div>{errorMessage}</div>;
+    }
+
+    if (filteredUsers.length === 0) {
+      return <EmptyState />;
+    }
+
+    return <UserList users={filteredUsers} />;
+  }
+
   return (
     <Container>
       <Header>{"Users list"}</Header>
@@ -81,15 +97,8 @@ const UserListView = () => {
         onChange={handleInputChange}
         aria-label="search-input"
       />
-      {isLoading ? (
-        <CircularSpinner />
-      ) : errorMessage ? (
-        <div>{errorMessage}</div>
-      ) : filteredUsers.length === 0 ? (
-        <EmptyState />
-      ) : (
-        <UserList users={filteredUsers} />
-      )}
+
+      <Content />
     </Container>
   );
 };
