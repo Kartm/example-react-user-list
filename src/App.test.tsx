@@ -11,7 +11,7 @@ const mockUsers: IUser[] = [
   },
 ];
 
-test("renders a list", async () => {
+beforeEach(() => {
   const mockJsonPromise = Promise.resolve(mockUsers);
   const mockFetchPromise = Promise.resolve({
     ok: true,
@@ -19,7 +19,9 @@ test("renders a list", async () => {
   });
   var globalRef: any = global;
   globalRef.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
+});
 
+test("renders a list", async () => {
   let component: any;
 
   await act(async () => {
@@ -31,14 +33,6 @@ test("renders a list", async () => {
 });
 
 test("filters a list", async () => {
-  const mockJsonPromise = Promise.resolve(mockUsers);
-  const mockFetchPromise = Promise.resolve({
-    ok: true,
-    json: () => mockJsonPromise,
-  });
-  var globalRef: any = global;
-  globalRef.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
-
   let component: RenderResult;
 
   await act(async () => {
@@ -53,14 +47,6 @@ test("filters a list", async () => {
 });
 
 test("undos a filter", async () => {
-  const mockJsonPromise = Promise.resolve(mockUsers);
-  const mockFetchPromise = Promise.resolve({
-    ok: true,
-    json: () => mockJsonPromise,
-  });
-  var globalRef: any = global;
-  globalRef.fetch = jest.fn().mockImplementation(() => mockFetchPromise);
-
   let component: RenderResult;
 
   await act(async () => {
