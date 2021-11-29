@@ -2,6 +2,11 @@ import Styled from "styled-components";
 import { IUser } from "../shared/user.model";
 
 const UserRowListItem = Styled.li`
+  list-style-position: inside;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;   
+
   ::marker {
     content: counter(list-item) ". ";
     color: grey;

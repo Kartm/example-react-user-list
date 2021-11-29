@@ -6,6 +6,7 @@ import { getUsers } from "../shared/user.api";
 import { IUser } from "../shared/user.model";
 
 const Header = Styled.h1`
+  text-align: center;
 `;
 
 const Container = Styled.div`
@@ -17,6 +18,8 @@ const Container = Styled.div`
 const SearchField = Styled.input`
   padding: 8px;
   max-width: 250px;
+  border: 0.5px solid black;
+  border-radius: 2px;
 `;
 
 const UserListView = () => {
