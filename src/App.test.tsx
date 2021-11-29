@@ -7,6 +7,7 @@ const mockUsers: IUser[] = [
     id: 1,
     name: "Name name",
     username: "username",
+    website: "username.com",
   },
 ];
 
@@ -25,7 +26,8 @@ test("renders a list", async () => {
     component = render(<UserListView />);
   });
 
-  expect(component.getByText("Name name @username")).toBeTruthy();
+  expect(component.getByText("Name name")).toBeTruthy();
+  expect(component.getByText("@username")).toBeTruthy();
 });
 
 test("filters a list", async () => {
@@ -47,7 +49,7 @@ test("filters a list", async () => {
   expect(input).toBeInTheDocument();
 
   fireEvent.change(input, { target: { value: "23" } });
-  expect(component!.getByText("brak wyników")).toBeTruthy();
+  expect(component!.getByText("No results found.")).toBeTruthy();
 });
 
 test("undos a filter", async () => {
@@ -69,8 +71,8 @@ test("undos a filter", async () => {
   expect(input).toBeInTheDocument();
 
   fireEvent.change(input, { target: { value: "23" } });
-  expect(component!.getByText("brak wyników")).toBeTruthy();
+  expect(component!.getByText("No results found.")).toBeTruthy();
 
   fireEvent.change(input, { target: { value: "" } });
-  expect(() => component!.getByText("brak wyników")).toThrow();
+  expect(() => component!.getByText("No results found.")).toThrow();
 });
