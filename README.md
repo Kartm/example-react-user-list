@@ -1,6 +1,10 @@
 ## Running the project
 
-`yarn start`
+`npm start`
+
+## Running tests
+
+`npm test`
 
 ## Screenshot
 
