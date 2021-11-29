@@ -57,11 +57,13 @@ const UserListView = () => {
 
   useEffect(() => {
     setIsLoading(true);
+
     setFilteredUsers(
       users.filter((user) =>
         user.name.toLowerCase().includes(searchValue.toLowerCase())
       )
     );
+
     setIsLoading(false);
   }, [searchValue, users]);
 
