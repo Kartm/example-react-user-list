@@ -15,7 +15,8 @@ const Container = Styled.div`
 `;
 
 const SearchField = Styled.input`
-  padding: 20px;
+  padding: 8px;
+  max-width: 250px;
 `;
 
 const UserListView = () => {
